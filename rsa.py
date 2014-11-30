@@ -65,16 +65,39 @@ def rsa_generate_key(k):
     return n, e, d
 
 
+def encrypt(message, e, n):
+    return modexp(message, e, n)
+
+
+def encrypt_string(string, e, n):
+    encrypted = []
+    for letter in string:
+        encrypted.append(encrypt(ord(letter), e, n))
+
+    return encrypted
+
+
+def decrypt(code, d, n):
+    return modexp(code, d, n)
+
+
+def decrypt_string(list, d, n):
+    decrypted = ""
+    for letter in list:
+        decrypted += chr(decrypt(letter, d, n))
+
+    return decrypted
+
+
 if __name__ == '__main__':
-    #print(extended_gcd(1, 2))
     n, e, d = rsa_generate_key(100)
 
     # m needs to be < n, since we're doing a mod n
-    m = 71258745238762364782364923129
-    print("m =", m)
+    m = "so far I can only encrypt so that each number is a letter... "
+    print("message to encrypt =", m)
     # encrypt m
-    c = modexp(m, e, n)
-    print("c =", c)
+    c = encrypt_string(m, e, n)
+    print("encoded message =", c)
     # decrypt c
-    m = modexp(c, d, n)
-    print("m =", m)
+    m = decrypt_string(c, d, n)
+    print("message decrypted =", m)
